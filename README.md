@@ -18,9 +18,13 @@
 
 ## 🛠 Установка
 
-Клонируйте репозиторий:
+1.Клонируйте репозиторий:
 ```bash
 git clone https://github.com/fan1omas/telegram-monitor-bot.git
 cd telegram-monitor-bot
+```
+2.Создайте и заполните файл .env:
+```bash
+touch .env
 ```
 
