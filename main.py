@@ -37,7 +37,6 @@ class Monitor:
         self.me = (await client.get_me()).id
         await self.bot.send_message(self.me, f"🔎 Мониторинг сообщений запущен... (Ctrl+C для выхода). Твой ID: {self.me}")
 
-
     async def check_deleted_messages(self, chat_id):
         """Фоновая задача для проверки удалённых сообщений"""
         while chat_id in self.chats:
@@ -87,8 +86,14 @@ class Monitor:
     async def handler_turn(self, event):
         if event.out:
             async with self.chats_lock:
-                command = event.text.split()[1]
-                if command.is_digit():
+                command = event.text.split()
+
+                if len(command) < 2:
+                    await client.send_message(self.me, f'Неверно введена команда в чате {event.chat_id}')
+                    return None
+
+                command = command[1]
+                if command.isdigit():
                     command = bool(int(command))
                     id_ = event.chat_id
 
@@ -97,12 +102,12 @@ class Monitor:
                             await self.bot.send_message(self.me, f'Id {id_} уже есть в списке чатов')
                         else:
                             self.chats[id_] = OrderedDict()
-                            await self.bot.send_message(id_, 'Обработчик сообщений успешно активирован!')
+                            await client.send_message(id_, 'Обработчик сообщений успешно активирован!')
 
                     else:
                         if id_ in self.chats:
                             self.chats.pop(id_)
-                            await self.bot.send_message(id_, 'Обработчик сообщений успешно отключён!')
+                            await client.send_message(id_, 'Обработчик сообщений успешно отключён!')
                         else:
                             await self.bot.send_message(self.me, f'Id {id_} нет в списке чатов')
                 else:
@@ -116,8 +121,8 @@ class Monitor:
 
 async def main():
     monitor = Monitor(bot)
-    await monitor.async_init()
     await client.start(phone)
+    await monitor.async_init()
     await monitor.setup_handlers()
 
     await asyncio.gather(
