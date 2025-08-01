@@ -20,8 +20,8 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/fan1omas/telegram-monitor-bot.git
-cd telegram-monitor-bot
+git clone https://github.com/fan1omas/tg-monitor-bot.git
+cd tg-monitor-bot
 ```
 2. Создайте и заполните конфиг-файл .env:
 ```bash
