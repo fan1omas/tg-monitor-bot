@@ -2,13 +2,11 @@ from telethon import TelegramClient, events
 from telethon.errors import (ChannelPrivateError, ChatIdInvalidError)
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message
-from dotenv import load_dotenv
 from os import getenv
 from collections import OrderedDict
 import asyncio
 import json
 
-load_dotenv()
 phone = getenv("PHONE")
 api_id = getenv("API_ID")
 api_hash = getenv("API_HASH")
@@ -156,7 +154,9 @@ class Monitor:
         if current_block:
             data.append(current_block)
 
-        with open("dataset.json", "w", encoding="utf-8") as f:
+        data = data[::-1]
+
+        with open("train_ai/dataset.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
         return data
 
