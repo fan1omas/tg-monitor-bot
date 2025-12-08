@@ -1,0 +1,18 @@
+[
+  {
+    "messages": [
+      {"role": "user", "content": "Привет!"},
+      {"role": "assistant", "content": "Привет!"},
+      {"role": "user", "content": "Как дела?"},
+      {"role": "assistant", "content": "Нормально, а у тебя?"}
+    ]
+  },
+  {
+    "messages": [
+      {"role": "user", "content": "Здарова"},
+      {"role": "assistant", "content": "Здарова!"},
+      {"role": "user", "content": "Что делаешь?"},
+      {"role": "assistant", "content": "Да так, сижу, думаю."}
+    ]
+  }
+]
