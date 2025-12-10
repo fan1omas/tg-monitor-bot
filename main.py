@@ -3,15 +3,20 @@ from telethon.errors import (ChannelPrivateError, ChatIdInvalidError)
 from aiogram import Bot, Dispatcher
 from aiogram.types import Message
 from os import getenv
+from dotenv import load_dotenv
 from collections import OrderedDict
 import asyncio
 import json
+
+load_dotenv()
 
 phone = getenv("PHONE")
 api_id = getenv("API_ID")
 api_hash = getenv("API_HASH")
 session_name = getenv("SESSION_NAME")
-bot_api = getenv("BOT_API")
+bot_api = getenv("BOT_APIS")
+
+print(phone)
 
 bot = Bot(token=bot_api)
 dp = Dispatcher()
@@ -168,8 +173,9 @@ class Monitor:
         ]
 
 async def main():
+    monitor = Monitor(bot)
+
     try:
-        monitor = Monitor(bot)
         await client.start(phone)
         await monitor.async_init()
         await monitor.setup_handlers()
@@ -179,7 +185,12 @@ async def main():
             client.run_until_disconnected()
         )
     except KeyboardInterrupt:
+        print("\n⚠️ Получен сигнал остановки...")
+    finally:
         await monitor.shutdown()
+        await bot.session.close()  # <-- Закрываем сессию бота
+        await client.disconnect()  # <-- Отключаем клиента
+
 
 if __name__ == '__main__':
     try:
@@ -187,4 +198,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\n🚫 Мониторинг остановлен.")
     finally:
-        pass
+        client.loop.run_until_complete(client.disconnect())
+        client.loop.close()
