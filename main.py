@@ -16,7 +16,6 @@ api_hash = getenv("API_HASH")
 session_name = getenv("SESSION_NAME")
 bot_api = getenv("BOT_APIS")
 
-print(phone)
 
 bot = Bot(token=bot_api)
 dp = Dispatcher()
